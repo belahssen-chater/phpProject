@@ -291,7 +291,7 @@ $usersCount = $user->customersCount();
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " href="index.php">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -303,18 +303,18 @@ $usersCount = $user->customersCount();
           <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+          <!-- <li>
             <a href="tables-general.html">
               <i class="bi bi-circle"></i><span>General Tables</span>
             </a>
-          </li>
+          </li> -->
           <li>
-            <a href="tables-data.html">
+            <a href="products.php">
               <i class="bi bi-circle"></i><span>Data Tables</span>
             </a>
           </li>
         </ul>
-      </li><!-- End Tables Nav -->
+      </li>End Tables Nav
 
  
 
@@ -322,19 +322,14 @@ $usersCount = $user->customersCount();
 
       <li class="nav-heading">Pages</li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
+
 
 
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-contact.html">
           <i class="bi bi-envelope"></i>
-          <span>Contact</span>
+          <span>Messages</span>
         </a>
       </li><!-- End Contact Page Nav -->
 
@@ -354,7 +349,7 @@ $usersCount = $user->customersCount();
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>

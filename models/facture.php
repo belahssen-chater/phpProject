@@ -1,65 +1,66 @@
 <?php
 require_once("../Database.php");
-class facture   {
-    private $id;
-    private $date;
-    private $id_client;
-    private $id_produit;
-    private $quantite;
-    private $prix;
-    private $total;
-    private $etat;
-    private $id_commande;
-    public function __construct($id = null, $date = null, $id_client = null, $id_produit = null, $quantite = null, $prix = null, $total = null, $etat = null, $id_commande = null) {
-        $this->id = $id;
-        $this->date = $date;
-        $this->id_client = $id_client;
-        $this->id_produit = $id_produit;
-        $this->quantite = $quantite;
-        $this->prix = $prix;
-        $this->total = $total;
-        $this->etat = $etat;
-        $this->id_commande = $id_commande;
-    }
-    public function create($data) {
-        $db = new Database();
-        $db->query("INSERT INTO facture (date, id_client, id_produit, quantite, prix, total, etat, id_commande) VALUES (:date, :id_client, :id_produit, :quantite, :prix, :total, :etat, :id_commande)");
-        $db->bind(':date', $data['date']);
-        $db->bind(':id_client', $data['id_client']);
-        $db->bind(':id_produit', $data['id_produit']);
-        $db->bind(':quantite', $data['quantite']);
-        $db->bind(':prix', $data['prix']);
-        $db->bind(':total', $data['total']);
-        $db->bind(':etat', $data['etat']);
-        $db->bind(':id_commande', $data['id_commande']);
-        $db->execute();
-    }
-    public function read() {
-        $db = new Database();
-        $db->query("SELECT * FROM facture");
-        $result = $db->resultSet();
-        return $result;
-    }
-    public function readById($id) {
-        $db = new Database();
-        $db->query("SELECT * FROM facture WHERE id = :id");
-        $db->bind(':id', $id);
-        $result = $db->single();    
-        return $result;
+class facture  extends Modele{
+    public ?int $id;
+    public ?int $id_commande;
+    public  $date;
+    public ?int $montant;
 
+    public function __construct($id = null, $id_commande = null, $date = null, $montant = null){
+        parent::__construct();
+        $this->id = $id;
+        $this->id_commande = $id_commande;
+        $this->date = $date;
+        $this->montant = $montant;
     }
-    public function update($data) {
-        $db = new Database();
-        $db->query("UPDATE facture SET date = :date, id_client = :id_client, id_produit = :id_produit, quantite = :quantite, prix = :prix, total = :total, etat = :etat, id_commande = :id_commande WHERE id = :id");
-        $db->bind(':id', $data['id']);
-        $db->bind(':date', $data['date']);
-        $db->bind(':id_client', $data['id_client']);
-        $db->bind(':id_produit', $data['id_produit']);
-        $db->bind(':quantite', $data['quantite']);
-        $db->bind(':prix', $data['prix']);
-        $db->bind(':total', $data['total']);
-        $db->bind(':etat', $data['etat']);
-        $db->bind(':id_commande', $data['id_commande']);
-        $db->execute();
+
+    public function getAll(){
+        $sql = "SELECT * FROM facture";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $factures = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $factures;
     }
+
+    public function save(){
+        $sql = "INSERT INTO facture (id_commande, date, montant) VALUES (:id_commande, :date, :montant)";
+        $stmt = $this->pdo->prepare($sql);
+        $rowsAffected = $stmt->execute([
+            ":id_commande" => $this->id_commande,
+            ":date" => $this->date,
+            ":montant" => $this->montant
+        ]);
+        return $rowsAffected == 1;
+    }
+
+    public function delete(){
+        $sql = "DELETE FROM facture WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $rowsAffected = $stmt->execute([":id" => $this->id]);
+        return $rowsAffected == 1;
+    }
+
+    public function update(){
+        $sql = "UPDATE facture SET id_commande = :id_commande, date = :date, montant = :montant WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $rowsAffected = $stmt->execute([
+            ":id_commande" => $this->id_commande,
+            ":date" => $this->date,
+            ":montant" => $this->montant,
+            ":id" => $this->id
+        ]);
+        return $rowsAffected == 1;
+    }
+
+    public function getFacture($id){
+        $sql = "SELECT * FROM facture WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([":id" => $id]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, "facture");
+        $facture = $stmt->fetch(PDO::FETCH_CLASS);
+        return $facture;
+    }
+
+}
+
 ?>

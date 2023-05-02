@@ -1,67 +1,61 @@
 <?php
 require_once("../Database.php");
-class categorie 
-{
-    private $id;
-    private $nom;
-    private $description;
-    private $image;
-    private $produits;
-    public function __construct($id = null, $nom = null, $description = null, $image = null, $produits = null)
-    {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->description = $description;
-        $this->image = $image;
-        $this->produits = $produits;
-    }
-    public function create($data)
-    {
-        $db = new Database();
-        $db->query("INSERT INTO categories (nom, description, image) VALUES (:nom, :description, :image)");
-        $db->bind(':nom', $data['nom']);
-        $db->bind(':description', $data['description']);
-        $db->bind(':image', $data['image']);
-        $db->execute();
-    }
-    public function read()
-    {
-        $db = new Database();
-        $db->query("SELECT * FROM categories");
-        $result = $db->resultSet();
-        return $result;
-    }
-    public function readById($id)
-    {
-        $db = new Database();
-        $db->query("SELECT * FROM categories WHERE id = :id");
-        $db->bind(':id', $id);
-        $result = $db->single();
-        return $result;
-    }
-    public function update($data)
-    {
-        $db = new Database();
-        $db->query("UPDATE categories SET nom = :nom, description = :description, image = :image WHERE id = :id");
-        $db->bind(':id', $data['id']);
-        $db->bind(':nom', $data['nom']);
-        $db->bind(':description', $data['description']);
-        $db->bind(':image', $data['image']);
-        $db->execute();
-    }
-    public function delete($id)
-    {
-        $db = new Database();
-        $db->query("DELETE FROM categories WHERE id = :id");
-        $db->bind(':id', $id);
-        $db->execute();
-    }
-    public function getProduits()
-    {
-        $db = new Database();
-        $db->query("SELECT * FROM produits WHERE categorie = :categorie");
-        $db->bind(':categorie', $this->id);
-    }
+class categorie   extends Modele{
+
+public ?int $id;
+public ?string $nom;
+
+
+public function __construct($id = null, $nom = null){
+    parent::__construct();
+    $this->id = $id;
+    $this->nom = $nom;
 }
+
+public function getAll(){
+    $sql = "SELECT * FROM categorie";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute();
+    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $categories;
+}
+
+public function save(){
+    $sql = "INSERT INTO categorie (nom) VALUES (:nom)";
+    $stmt = $this->pdo->prepare($sql);
+    $rowsAffected = $stmt->execute([
+        ":nom" => $this->nom
+    ]);
+    return $rowsAffected == 1;
+}
+public function delete(){
+    $sql = "DELETE FROM categorie WHERE id = :id";
+    $stmt = $this->pdo->prepare($sql);
+    $rowsAffected = $stmt->execute([":id" => $this->id]);
+    return $rowsAffected == 1;
+}
+
+public function update(){
+    $sql = "UPDATE categorie SET nom = :nom WHERE id = :id";
+    $stmt = $this->pdo->prepare($sql);
+    $rowsAffected = $stmt->execute([
+        ":nom" => $this->nom,
+        ":id" => $this->id
+    ]);
+    return $rowsAffected == 1;
+}
+
+public function getCategorie($id){
+    $sql = "SELECT * FROM categorie WHERE id = :id";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([":id" => $id]);
+    $stmt->setFetchMode(PDO::FETCH_CLASS, 'categorie');
+    $categorie = $stmt->fetch(PDO::FETCH_CLASS);
+    return $categorie;
+}
+
+
+}
+
 
 ?>

@@ -1,12 +1,14 @@
 <?php
 
     $data = [
-        'nom' => $_POST['nom'],
-        'description' => $_POST['description'],
-        'prix' => $_POST['prix'],
-        'image' => $_POST['image'],
-        'categorie' => $_POST['categorie']
+        'id' => $_POST['id'],
+        'nom' => $_POST['Name'],
+        'description' => $_POST['Description'],
+        'prix' => $_POST['price'],
+ 
     ];
 
     $produit = new Produit();
-    $produit->create($data);
+    $produit->insert($data);
+    header('Location: index.php?controller=admin&task=produit');
+?>
