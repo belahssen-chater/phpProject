@@ -1,3 +1,17 @@
+<?php
+    require_once("../../models/Produit.php");
+
+    $id = $_GET['id'];
+
+    $produit = new Produit();
+    $product = $produit->getProduit($id);
+
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -663,24 +677,25 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title"> Ajouter un produit</h5>
+              <h5 class="card-title">Modifier le produit <?=$id?></h5>
 
               <!-- Vertical Form -->
-              <form class="row g-3" method="post" action="../../controllers/admin/ajoutProduitController.php">
+              <form class="row g-3" method="post" action="../../controllers/admin/modifierProduitController.php">
+                <input type="hidden" name="id" value="<?=$id?>">
                 <div class="col-12">
                   <label for="nom" class="form-label">Nom</label>
-                  <input type="text" class="form-control" id="nom" name="nom" required>
+                  <input type="text" class="form-control" id="nom" name="nom" value="<?=$product['nom']?>" required>
                 </div>
                 <div class="col-12">
                   <label for="description" class="form-label">Description</label>
-                  <input type="text" class="form-control" id="description" name="description" required>
+                  <input type="text" class="form-control" id="description" name="description" value="<?=$product['description']?>" required>
                 </div>
                 <div class="col-12">
                   <label for="prix" class="form-label">Prix</label>
-                  <input type="number" class="form-control" id="prix" name="prix" required>
+                  <input type="number" class="form-control" id="prix" name="prix" value="<?=$product['prix']?>" required>
                 </div>
                 <div class="text-center">
-                  <input type="submit" class="btn btn-primary" value="Ajouter" />
+                  <input type="submit" class="btn btn-primary" value="Modifier" />
                   <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
               </form><!-- Vertical Form -->

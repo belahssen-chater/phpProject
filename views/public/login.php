@@ -23,8 +23,10 @@
         {
           if ($data['role'] == 1){
             header("location: ../admin/index.php");
+            $_SESSION['username'] = $data['username'];
+            $_SESSION['role'] = $data['role'];
           } else {
-            header("location: ./client/dashboard.php");
+            header("location: ../client/indexcl.php");
           }
         }
         else

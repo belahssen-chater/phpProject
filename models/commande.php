@@ -2,6 +2,7 @@
 require_once(__DIR__ .  "/../Database.php");
 class commande extends Modele {
 
+    // todo: ajouter les attributs de la commande
     public ?int $id;
     public ?int $id_client;
     public  $date;
@@ -81,7 +82,7 @@ class commande extends Modele {
         $sql = "SELECT COUNT(*) FROM commande";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $ordersCount = $stmt->fetch(PDO::FETCH_ASSOC);
+        $ordersCount = $stmt->fetchColumn();
         return $ordersCount;
     }
 

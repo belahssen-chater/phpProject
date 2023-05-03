@@ -1,4 +1,30 @@
 <?php
+    if (isset($_GET['add'])) {
+        if ($_GET['add'] == 1) {
+            echo "<script>alert('Produit ajouté avec succès')</script>";
+        } else {
+            echo "<script>alert('Erreur lors de l'ajout du produit')</script>";
+        }
+    }
+
+    if (isset($_GET['delete'])) {
+        if ($_GET['delete'] == 1) {
+            echo "<script>alert('Produit supprimé avec succès')</script>";
+        } else {
+            echo "<script>alert('Erreur lors de la suppression du produit')</script>";
+        }
+    }
+
+    if (isset($_GET['update'])) {
+        if ($_GET['update'] == 1) {
+            echo "<script>alert('Produit modifié avec succès')</script>";
+        } else {
+            echo "<script>alert('Erreur lors de la modification du produit')</script>";
+        }
+    }
+
+
+
     require_once("../../models/Produit.php");
     $produit = new Produit();
 
@@ -300,8 +326,18 @@
                         <td><?=$product['description']?></td>
                         <td><?=$product['prix']?></td>
                         <td>
-                            <a href="#" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger">Delete</a>
+                            <a href="editProduct.php?id=<?=$product['id'] ?>" class="btn btn-primary">Edit</a>
+                            <a id="deleteBtn" href="../../controllers/admin/suprimerProduitController.php?id=<?=$product['id'] ?>" class="btn btn-danger">Delete</a>
+                            <script>
+                              let deleteBtn = document.getElementById('deleteBtn');
+                              deleteBtn.addEventListener('click', function(e){
+                                e.preventDefault();
+                                let confirm = window.confirm('Are you sure you want to delete this product?');
+                                if(confirm){
+                                  window.location.href = "../../controllers/admin/suprimerProduitController.php?id=<?=$product['id'] ?>";
+                                }
+                              })
+                            </script>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -314,7 +350,7 @@
               <!-- add product btn -->
                 <div class="row">
                     <div class="col-lg-12 mt-2">
-                    <a href="#" class="btn btn-primary">Add Product</a>
+                    <a href="add-product.php" class="btn btn-primary">Add Product</a>
                 </div>
             </div>
           </div>

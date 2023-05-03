@@ -2,17 +2,15 @@
 //modififier produit
 require_once("../../models/produit.php");
 $produit = new Produit();
-$produit->id = $_GET['id'];
-$produit->getById();
-if(isset($_POST['modifierProduit_btn']))
-{
-    $produit->nom = $_POST['nom'];
-    $produit->prix = $_POST['prix'];
-    $produit->description = $_POST['description'];
-    $produit->categorie = $_POST['categorie'];
-    $produit->image = $_POST['image'];
-    $produit->update();
-    header("Location: ./produits.php");
+$produit->id = $_POST['id'];
+$produit->nom = $_POST['nom'];
+$produit->prix = $_POST['prix'];
+$produit->description = $_POST['description'];
+$res = $produit->update();
+if($res){
+    header("location:../../views/admin/products.php?update=1");
+}else{
+    header("location:../../views/admin/products.php?update=0");
 }
 
 

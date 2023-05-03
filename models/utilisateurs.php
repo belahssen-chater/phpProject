@@ -7,6 +7,7 @@ class Utilisateur extends Modele{
     public ?string $email;
     public ?int $role;
 
+
     public function __construct(
         int $id = null,
         string $username = null,
@@ -101,6 +102,19 @@ class Utilisateur extends Modele{
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchColumn();
+    }
+
+    public function checkAuth(){
+        // check session status
+        // if the session isn't started, start it
+        if(session_status() == PHP_SESSION_NONE){
+            session_start();
+        }
+
+        if(!isset($_SESSION['username'])){
+            header('Location: /');
+            exit();
+        }
     }
 }
 ?>
